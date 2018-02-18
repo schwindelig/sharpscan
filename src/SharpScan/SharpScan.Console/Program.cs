@@ -36,13 +36,6 @@ namespace SharpScan.Console
                 {
                     scanner.TakeScreenshot($"http://{entry.IpAddress}", screenshotDirectory, $"{entry.IpAddress}-80.png");
                 }
-
-                // Serialize the results
-                var serializationPath = $"c:\\temp\\scan-result-{Guid.NewGuid()}.sr";
-                scanner.SerializeScanResult(scanResult, serializationPath);
-
-                // Load scan results
-                scanResult = scanner.DeserializeScanResult(serializationPath);
             }
         }
     }

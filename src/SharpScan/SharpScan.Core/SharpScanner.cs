@@ -93,17 +93,6 @@ namespace SharpScan.Core
             }
         }
 
-        public void SerializeScanResult(ScanResult scanResult, string path)
-        {
-            var serialized = JsonConvert.SerializeObject(scanResult);
-            File.WriteAllText(path, serialized);
-        }
-
-        public ScanResult DeserializeScanResult(string path)
-        {
-            return JsonConvert.DeserializeObject<ScanResult>(path);
-        }
-
         public void Dispose()
         {
             this.PhantomJsDriver?.Quit();
