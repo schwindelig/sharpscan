@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using SharpScan.Core;
 
@@ -17,26 +18,31 @@ namespace SharpScan.Console
             {
                 // Do a scan for some common ports
                 System.Console.WriteLine("Run scan ...");
-
-                var result = scanner.RunTcpScan(
+                var scanResult = scanner.RunTcpScan(
                     IPAddress.Parse("82.220.1.1"),
-                    IPAddress.Parse("82.220.255.255"),
+                    IPAddress.Parse("82.220.1.30"),
                     new[] { 21, 80, 3389 });
 
-                var onlineWithOpen = result.ScanEntries.Where(e => e.IsOnline && e.OpenPorts.Any()).ToList();
+                var onlineWithOpen = scanResult.ScanEntries.Where(e => e.IsOnline && e.OpenPorts.Any()).ToList();
                 foreach (var entry in onlineWithOpen)
                 {
-                    System.Console.WriteLine($"{entry.IpAddress}: {{{string.Join(";", entry.OpenPorts)}}}");
+                    System.Console.WriteLine($"{entry.IpAddress} {{{string.Join(";", entry.OpenPorts)}}}");
                 }
 
                 // Visit pages with port 80 open and take a screenshot
                 System.Console.WriteLine("Start taking screenshots ...");
-
                 var entriesWith80 = onlineWithOpen.Where(e => e.OpenPorts.Contains(80));
                 foreach (var entry in entriesWith80)
                 {
                     scanner.TakeScreenshot($"http://{entry.IpAddress}", screenshotDirectory, $"{entry.IpAddress}-80.png");
                 }
+
+                // Serialize the results
+                var serializationPath = $"c:\\temp\\scan-result-{Guid.NewGuid()}.sr";
+                scanner.SerializeScanResult(scanResult, serializationPath);
+
+                // Load scan results
+                scanResult = scanner.DeserializeScanResult(serializationPath);
             }
         }
     }

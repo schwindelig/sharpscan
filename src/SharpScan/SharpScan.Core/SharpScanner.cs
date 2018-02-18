@@ -2,11 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NetTools;
+using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium;
 
@@ -89,6 +91,17 @@ namespace SharpScan.Core
             catch(Exception e)
             {
             }
+        }
+
+        public void SerializeScanResult(ScanResult scanResult, string path)
+        {
+            var serialized = JsonConvert.SerializeObject(scanResult);
+            File.WriteAllText(path, serialized);
+        }
+
+        public ScanResult DeserializeScanResult(string path)
+        {
+            return JsonConvert.DeserializeObject<ScanResult>(path);
         }
 
         public void Dispose()
