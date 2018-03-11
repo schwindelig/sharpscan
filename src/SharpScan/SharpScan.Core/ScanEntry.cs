@@ -7,7 +7,7 @@ namespace SharpScan.Core
     {
         public bool IsOnline { get; set; }
 
-        public IPAddress IpAddress { get; set; }
+        public ScanIpAddress IpAddress { get; set; }
 
         public IEnumerable<int> OpenPorts { get; set; }
     }

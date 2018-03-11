@@ -2,13 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NetTools;
-using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium;
 
@@ -53,7 +51,7 @@ namespace SharpScan.Core
                 scanEntries.Push(new ScanEntry
                 {
                     IsOnline = isOnline,
-                    IpAddress = ip,
+                    IpAddress = ScanIpAddress.FromIpAddress(ip),
                     OpenPorts = openPorts
                 });
             });
@@ -61,8 +59,8 @@ namespace SharpScan.Core
 
             return new ScanResult
             {
-                StartAddress = startAddress,
-                EndAddress = endAddress,
+                StartAddress = ScanIpAddress.FromIpAddress(startAddress),
+                EndAddress = ScanIpAddress.FromIpAddress(endAddress),
                 ScanEntries = scanEntries,
                 StartDate = startDate,
                 EndDate = endDate

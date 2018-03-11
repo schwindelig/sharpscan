@@ -10,18 +10,19 @@ namespace SharpScan.Console
         static void Main(string[] args)
         {
             const string screenshotDirectory = "c:\\temp\\screenshots";
+            const string phantomJsDirectory = "C:\\tools\\phantomjs-2.1.1-windows\\bin";
 
             using (var scanner = new SharpScanner
             {
-                PhantomJsDirectory = "C:\\tools\\phantomjs-2.1.1-windows\\bin"
+                PhantomJsDirectory = phantomJsDirectory
             })
             {
                 // Do a scan for some common ports
                 System.Console.WriteLine("Run scan ...");
                 var scanResult = scanner.RunTcpScan(
-                    IPAddress.Parse("82.220.1.1"),
-                    IPAddress.Parse("82.220.1.30"),
-                    new[] { 21, 80, 3389 });
+                    IPAddress.Parse("82.220.83.135"),
+                    IPAddress.Parse("82.220.83.137"),
+                    new[] { 3389 });
 
                 var onlineWithOpen = scanResult.ScanEntries.Where(e => e.IsOnline && e.OpenPorts.Any()).ToList();
                 foreach (var entry in onlineWithOpen)
@@ -36,6 +37,11 @@ namespace SharpScan.Console
                 {
                     scanner.TakeScreenshot($"http://{entry.IpAddress}", screenshotDirectory, $"{entry.IpAddress}-80.png");
                 }
+
+                var path = $"c:\\temp\\scan-results\\{ Guid.NewGuid().ToString()}.json";
+                scanResult.Save(path);
+
+                var secondResult = ScanResult.Load(path);
             }
         }
     }
