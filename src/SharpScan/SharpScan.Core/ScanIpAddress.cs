@@ -18,5 +18,10 @@ namespace SharpScan.Core
         {
             return IPAddress.Parse(this.Ip);
         }
+
+        public override string ToString()
+        {
+            return this.Ip;
+        }
     }
 }

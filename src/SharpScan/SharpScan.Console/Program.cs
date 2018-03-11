@@ -10,7 +10,7 @@ namespace SharpScan.Console
         static void Main(string[] args)
         {
             const string screenshotDirectory = "c:\\temp\\screenshots";
-            const string phantomJsDirectory = "C:\\tools\\phantomjs-2.1.1-windows\\bin";
+            const string phantomJsDirectory = "c:\\tools\\phantomjs-2.1.1-windows\\bin";
 
             using (var scanner = new SharpScanner
             {
